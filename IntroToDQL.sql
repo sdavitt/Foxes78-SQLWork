@@ -229,3 +229,46 @@ order by count(amount) desc;
 * blah;
 */
 -- answer
+
+-- HW #9 How many payment amounts (4.99, 5.99, etc.) had a number of rentals above 250 for customers
+ -- with ids between 380 and 430? (use group by and having > 250)
+
+-- count(amount)
+-- group by amount
+-- having count(amount) > 250
+
+select amount, count(amount)
+from payment
+group by amount
+having count(amount) > 250;
+
+-- customer_id
+-- where customer_id between 380 and 430
+
+select customer_id
+from payment
+where customer_id between 380 and 430;
+
+-- combine into one query
+select amount, count(payment_id)
+from payment
+where customer_id between 380 and 430
+group by amount
+having count(payment_id) > 250;
+
+-- 3 payment amounts have a count greater than 250 for customer_ids between 380 and 430: $0.99 (269), $2.99 (290), and $4.99 (281)
+
+
+select * from payment;
+
+-- want total number of transactions/rentals/payments (how many rows in the payment table satisfy these conditions)
+-- at each payment level (2.99 or 4.99 or 5.99)
+-- if that number of transactions is more than 250
+-- only for customer_ids between 380 and 430
+
+-- combine wheres/havings using and/or
+select amount, count(payment_id), count(amount)
+from payment
+where customer_id between 380 and 430 or customer_id between 100 and 200
+group by amount
+having count(payment_id) > 250 and count(amount) > 250;
